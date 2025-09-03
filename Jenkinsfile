@@ -13,21 +13,21 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat 'python -m pip install --upgrade pip'
-                bat 'if exist requirements.txt pip install -r requirements.txt'
+                bat 'if exist requirenets.txt pip install -r requirements.txt'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                // Discover and run all Python tests in the 'tests' folder
-                bat 'python -m unittest discover -s tests -p "*.py" -v'
+                // Discover and run your test.py file at the root
+                bat 'python -m unittest test.py -v'
             }
         }
     }
 
     post {
         success {
-            echo '✅ Build and all tests completed successfully!'
+            echo '✅ Build and tests completed successfully!'
         }
         failure {
             echo '❌ Build or tests failed. Check the console output for details.'

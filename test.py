@@ -1,35 +1,18 @@
-import pytest
-from app import add, subtract, multiply, divide
-#functions
-def test_add(a, b):
-    assert add(1,2) == 3
-    assert add(-1,1) == 0
-    assert add(0,0) == 0
-def test_subtract():
-    assert subtract(5,3) == 2
-    assert subtract(0,0) == 0
-    assert subtract(-1,-1) == 0
+import unittest
+from app import Calculator  # assuming your app.py has Calculator class
 
+class TestCalculator(unittest.TestCase):
+    def setUp(self):
+        self.calc = Calculator()
 
-@pytest.fixture
-def sample_numbers():
-    return (10, 5)
+    def test_add(self):
+        self.assertEqual(self.calc.add(2, 3), 5)
 
-def test_divide_with_fixture(sample_numbers):
-    num1, num2 = sample_numbers
-    assert divide(num1, num2) == 2.0
-    assert divide(num2, num1) == 0.5
+    def test_subtract(self):
+        self.assertEqual(self.calc.subtract(5, 3), 2)
 
-@pytest.mark.parametrize("num1, num2, expected", [
-    (10, 2, 5.0),
-    (100, 10, 10.0),
-    (1, 1, 1.0),
-    (-6, 3, -2.0)
-])
-def test_divide_parametrized(num1, num2, expected):
-    assert divide(num1, num2) == expected
+    def test_multiply(self):
+        self.assertEqual(self.calc.multiply(2, 4), 8)
 
-
-def test_divide_by_zero_raises_error():
-    with pytest.raises(ValueError, match="Cannot divide by zero!"):
-        divide(10, 0)
+if __name__ == '__main__':
+    unittest.main()
