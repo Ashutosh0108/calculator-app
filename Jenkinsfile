@@ -4,7 +4,10 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Ashutosh0108/calculator-app.git'
+                // Use your GitHub credential
+                git credentialsId: '90338758-95e6-4a53-b964-c7548aba6c01', 
+                    url: 'https://github.com/Ashutosh0108/calculator-app.git', 
+                    branch: 'main'
             }
         }
 
@@ -23,6 +26,15 @@ pipeline {
                 // Run all tests in the 'tests' folder
                 bat 'python -m unittest discover -s tests'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build and tests completed successfully!'
+        }
+        failure {
+            echo 'Build or tests failed. Check the console output.'
         }
     }
 }
