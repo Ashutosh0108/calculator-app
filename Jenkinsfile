@@ -1,31 +1,38 @@
 pipeline {
     agent any
 
-    environment {
-        PYTHON_PATH = "python"   // or "python3"
-    }
-
     stages {
+        // 1️⃣ Checkout the latest code from your Git repo
         stage('Checkout SCM') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Install Dependencies') {
+        // 2️⃣ Setup virtual environment and install dependencies
+        stage('Setup Virtual Environment') {
             steps {
-                bat "\"${env.PYTHON_PATH}\" -m pip install --upgrade pip"
-                bat "\"${env.PYTHON_PATH}\" -m pip install -r requirements.txt"
+                // Create venv
+                bat "python -m venv venv"
+                
+                // Upgrade pip inside venv
+                bat "venv\\Scripts\\python.exe -m pip install --upgrade pip"
+                
+                // Install required dependencies from requirements.txt
+                bat "venv\\Scripts\\python.exe -m pip install -r requirements.txt"
             }
         }
 
+        // 3️⃣ Run Unit Tests
         stage('Run Unit Tests') {
             steps {
-                bat "\"${env.PYTHON_PATH}\" -m unittest discover"
+                // Discover and run all tests starting with test_*.py
+                bat "venv\\Scripts\\python.exe -m unittest discover"
             }
         }
     }
 
+    // 4️⃣ Post actions
     post {
         success {
             echo "✅ Build and tests succeeded!"
