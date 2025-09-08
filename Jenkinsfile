@@ -10,17 +10,23 @@ pipeline {
 
         stage('Setup Virtual Environment') {
             steps {
+                // Delete old venv if it exists
                 bat "if exist venv rmdir /s /q venv"
+
+                // Create a new virtual environment
                 bat "python -m venv venv"
-                bat ".\venv\Scripts\activate"
-                bat "python -m pip install --upgrade pip"
-                bat "python -m pip install -r requirements.txt"
+
+                // Upgrade pip inside venv
+                bat "venv\\Scripts\\python.exe -m pip install --upgrade pip"
+
+                // Install dependencies
+                bat "venv\\Scripts\\python.exe -m pip install -r requirements.txt"
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                bat "python -m unittest discover -s . -p \"test_*.py\""
+                bat "venv\\Scripts\\python.exe -m unittest discover -s . -p \"test_*.py\""
             }
         }
     }
