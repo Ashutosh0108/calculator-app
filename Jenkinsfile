@@ -12,7 +12,7 @@ pipeline {
         // 2️⃣ Setup virtual environment and install dependencies
         stage('Setup Virtual Environment') {
             steps {
-                // Delete old venv if exists
+                // Delete old venv if it exists
                 bat "if exist venv rmdir /s /q venv"
 
                 // Create a new virtual environment
@@ -30,7 +30,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 // Discover and run all tests starting with test_*.py
-                bat "venv\\Scripts\\python.exe -m unittest discover -s . -p 'test_*.py'"
+                bat "venv\\Scripts\\python.exe -m unittest discover -s . -p \"test_*.py\""
             }
         }
     }
