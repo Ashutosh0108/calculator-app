@@ -12,14 +12,15 @@ pipeline {
             steps {
                 bat "if exist venv rmdir /s /q venv"
                 bat "python -m venv venv"
-                bat "venv\\Scripts\\python.exe -m pip install --upgrade pip"
-                bat "venv\\Scripts\\python.exe -m pip install -r requirements.txt"
+                bat ".\venv\Scripts\activate"
+                bat "python -m pip install --upgrade pip"
+                bat "python -m pip install -r requirements.txt"
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                bat "venv\\Scripts\\python.exe -m unittest discover -s . -p \"test_*.py\""
+                bat "python -m unittest discover -s . -p \"test_*.py\""
             }
         }
     }
